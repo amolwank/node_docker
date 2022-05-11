@@ -25,7 +25,7 @@ check the result at http://localhost:3000/
 
 Running docker in deamon mode
 >docker run -d -p 3000:3000 loma/node
-
+https://amolwank.github.io/todayIlearn/
 Interactive mode
 First run 
 >docker ps
@@ -109,6 +109,54 @@ app.get('/nodemon', (req, res) => {
 });
 
 
+MySql as stand alone image:
 
+>docker run --name mysql-db -e MYSQL_ROOT_PASSWORD=complexpassword -d -p 3306:3306 mysql
+
+install mysql on local machin to connect to container mysql 
+with vpn connected on local server
+>sudo yum -y install @mysql
+
+
+>docker run --name mysql-db -e MYSQL_ROOT_PASSWORD=complexpassword -d -p 3307:3306 mysql
+
+>mysql -uroot -pcomplexpassword -h 0.0.0.0 -P 3307
+
+mysql> show databases;
+mysql> CREATE DATABASE Customers;
+mysql> USE Customers;
+mysql> source /home/awankhede/developement/HOME_REPO/node_docker/database.sql;
+mysql> show tables;
+
+
+##Connecting to database from Node.js:
+
+
+mysql> ALTER USER 'root' IDENTIFIED WITH mysql_native_password BY 'complexpassword';
+mysql> FLUSH PRIVILEGES;
+
+Changes app.js and build it again
+
+>docker build -t loma/node .
+>docker run -d -p 3000:3000 --name my-container --link mysql-db:mysql loma/node
+
+TO check container log:
+>docker logs my-container
+
+###creating networks or custom bridge networks
+create the network
+>docker network create --driver bridge isolated_network
+>docker run -d -p 3000:3000 --net isolated_network --name my-container loma/node
+>docker run -p 3307:3306 --net isolated_network --name mysql-db -e MYSQL_ROOT_PASSWORD=complexpassword -d mysql
+
+
+
+
+
+
+
+
+
+ 
 
 
