@@ -12,4 +12,4 @@ RUN npm install
 
 EXPOSE $PORT
 
-ENTRYPOINT ["node", "app.js"]
+ENTRYPOINT ["npm", "start"]

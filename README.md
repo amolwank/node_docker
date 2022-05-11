@@ -45,3 +45,70 @@ Cleaning up:
 check the existing stopped containers 
 >docker ps -a
 >docker rm <c_i> <c_id2>
+
+Creating and managing a volume
+e.g. docker volume create [name of volume]
+>docker volume create logs
+check check volumes
+>docker volume ls
+
+remove volume currenlty not using
+>docker volume prune
+
+Remove a single volume
+
+>docker volume rm [name of volume]
+
+see more details on our created volume
+>docker inspect logs
+
+Mounting a volume in your application
+>docker run -d -p 3000:3000 --name my-container --volume my-volume:/logs loma/node
+
+>docker ps
+conatainer id c7e6
+>docker inspect c7e6
+
+you will see
+.....................
+"Mounts": [
+            {
+                "Type": "volume",
+                "Name": "my-volume",
+                "Source": "/var/lib/docker/volumes/my-volume/_data",
+                "Destination": "/logs",
+                "Driver": "local",
+                "Mode": "z",
+                "RW": true,
+                "Propagation": ""
+            }
+        ],
+.................
+
+ locate our volume inside of our container.
+>docker exec -it my-container bash
+conatainer>cd ..
+you will see the /logs
+
+Mounting a subdirectory as a volume:
+
+Treating our application as a volume:
+(--volume $(pwd):/app)
+>docker kill my-container && docker rm my-container
+
+install nodemon
+npm install --save-dev nodemon
+
+make changes in package.json in srcipts:
+
+docker run -d -p 3000:3000 --name my-constainer --volume $(pwd):/app loma/node
+
+you can add the endpoint in app.js and check the at url like  http://localhost:3000/nodemon
+app.get('/nodemon', (req, res) => {
+    res.send('Hello from nodemon');
+});
+
+
+
+
+
