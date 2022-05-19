@@ -152,7 +152,7 @@ create the network
 
 >docker run -p 3307:3306 --net isolated_network --name mysql-db -e MYSQL_ROOT_PASSWORD=complexpassword -d mysql
 
-
+kubernetes comming...
 
 
 
